@@ -4,6 +4,8 @@ import { store } from "./store";
 import { Provider } from "react-redux";
 
 import App from "./App";
+// import default style
+import 'rsuite/dist/rsuite.min.css';
 
 ReactDOM.render(
   <Provider store={store}>

@@ -1,9 +1,11 @@
 .footer {
   display: flex;
   justify-content: flex-end;
+  align-items: center;
   background-color: var(--main-blue);
   color: var(--white);
   padding-right: 10px;
+  height: 5vh;
 }
 
 .footer-copyright {

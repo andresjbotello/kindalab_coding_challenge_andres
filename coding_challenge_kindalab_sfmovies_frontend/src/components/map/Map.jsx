@@ -2,6 +2,7 @@ import React from "react";
 import GoogleMapReact from "google-map-react";
 import { useSelector, useDispatch } from "react-redux";
 import { Icon } from "@iconify/react";
+import { Button } from "rsuite";
 import locationIcon from "@iconify/icons-mdi/map-marker";
 
 import "./map.css";
@@ -24,32 +25,43 @@ const Map = ({ location, zoomLevel }) => {
       fetch(`http://localhost:8000/get-geolocation/${addr}`)
         .then((res) => res.json())
         .then((coord) => {
-          console.log("addr: ", addr)
-          console.log("latLng: ",coord)
-          dispatch(setGeoLocations({geoLocations: [...geoLocations, coord]}));
+          console.log("addr: ", addr);
+          console.log("latLng: ", coord);
+          dispatch(setGeoLocations({ geoLocations: [...geoLocations, coord] }));
         });
     });
-
-  } 
+  };
 
   return (
     <div className="map">
-      <div>
-        <MoviesDropdown />
-        <button 
-          onClick={() => handleGeoLocations()} 
-          disabled={locations.length == 0}
+      <div style={{height: "15vh"}}>
+        <h5 style={{ padding: 10 }}>
+          See the locations in which the movie you selected was filmed
+        </h5>
+        <div
+          style={{
+            width: "100%",
+            display: "flex",
+            flexDirection: "row",
+            paddingTop: 10,
+            paddingBottom: 10,
+          }}
         >
-          Set Markers
-        </button>
-        <button 
-          onClick={() => dispatch(removeGeoLocations())} 
-          disabled={geoLocations.length == 0}
-        >
-          Remove Markers
-        </button>
+          <MoviesDropdown />
+          <Button
+            onClick={() => handleGeoLocations()}
+            disabled={locations.length == 0}
+          >
+            Set Markers
+          </Button>
+          <Button
+            onClick={() => dispatch(removeGeoLocations())}
+            disabled={geoLocations.length == 0}
+          >
+            Remove Markers
+          </Button>
+        </div>
       </div>
-      <h3 className="map-h3">See the locations in which the movie you selected were filmed</h3>
 
       <div className="google-map">
         <GoogleMapReact
@@ -57,9 +69,11 @@ const Map = ({ location, zoomLevel }) => {
           defaultCenter={location}
           defaultZoom={zoomLevel}
         >
-          {geoLocations? (
-            geoLocations.map((loc, index) => (<LocationPin key={index} lat={loc.lat} lng={loc.lng} />))
-          ): null}
+          {geoLocations
+            ? geoLocations.map((loc, index) => (
+                <LocationPin key={index} lat={loc.lat} lng={loc.lng} />
+              ))
+            : null}
         </GoogleMapReact>
       </div>
     </div>
