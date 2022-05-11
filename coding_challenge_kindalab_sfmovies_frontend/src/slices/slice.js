@@ -23,8 +23,9 @@ export const movieSlice = createSlice({
     setGeoLocations: (state, action) => {
       state.geoLocations = action.payload.geoLocations;
     },
-    removeGeoLocations: (state, action) => {
+    removeGeoLocations: (state, _action) => {
       state.geoLocations = []
+      state.locations = []
     }
   },
 });

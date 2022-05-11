@@ -1,5 +1,6 @@
 import json
-from fastapi import FastAPI
+from fastapi import FastAPI, Body
+from pydantic import BaseModel
 from fastapi.middleware.cors import CORSMiddleware
 import requests
 import config
@@ -13,6 +14,9 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+class AddressesList(BaseModel):
+    addresses: list[str]
 
 
 @app.get("/all-movies")
@@ -87,3 +91,15 @@ async def get_geolocation(location: str):
         return json.dumps([])
     else:
         return json.dumps({"lat": data["data"][0]["latitude"], "lng": data["data"][0]["longitude"]})
+
+@app.post("/get-geolocations/")
+async def get_geolocation(data: AddressesList):
+    geolocations = []
+    for addr in data.addresses:
+        response = requests.get(f"http://api.positionstack.com/v1/forward?access_key={config.POSITION_STACK_API_KEY}& query={addr}")
+        response = json.loads(response.content.decode('utf-8'))
+        if len(response["data"]) == 0: 
+            pass
+        else:
+            geolocations.append({"lat": response["data"][0]["latitude"], "lng": response["data"][0]["longitude"]})
+    return geolocations

@@ -24,7 +24,7 @@ const App = () => {
 
   return (
     <div className="App">
-      <MapSection location={location} zoomLevel={10} />
+      <MapSection location={location} zoomLevel={0} />
       <FooterSection />
     </div>
   );
