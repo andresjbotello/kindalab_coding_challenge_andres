@@ -8,4 +8,4 @@ You can run this project using Docker by simply typing:
 ```bash
 docker-compose up -d --build
 ```
-The Web App will be available on port http://localhost:5001.
+The Web App will be available on http://localhost:5001.
